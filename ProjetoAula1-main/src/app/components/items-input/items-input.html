@@ -1,0 +1,43 @@
+<form (ngSubmit)="adicionarDespesa.emit()" class="form flex flex-col w-3xl justify-between p-4 ml-150">
+    
+
+    <label class="p-4" for="descricao">Descrição:</label>
+    <input class="border p-2"
+        id="descricao"
+        type="text"
+        placeholder="Descrição"
+        formControlName="descricao"
+        required>
+   
+
+    <label class="p-4" for="valor">Valor:</label>
+    <input class="border p-2"
+       id="valor"
+       type="number" 
+       placeholder="Valor" 
+       formControlName="valor" 
+       required>
+    
+
+    <label class="p-4" for="data">Data:</label>
+    <input class="border p-4"
+       id="data"
+       type="date" 
+       formControlName="data" 
+       title="Data da despesa" 
+       required>
+    
+
+    <label class="p-4" for="categoria">Categoria:</label>
+    <input class="border p-2"
+        id="categoria"
+        type="text" 
+        placeholder="Digite a categoria (ex: agua, alimentos, salario)" 
+        formControlName="categoria" 
+        list="categoriasList"
+        required>
+    <datalist id="categoriasList">
+      <option *ngFor="let cat of obterSugestoesCategoria()" [value]="cat"></option>
+    </datalist>
+    
+  </form>

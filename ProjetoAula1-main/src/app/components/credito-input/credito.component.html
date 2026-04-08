@@ -1,0 +1,9 @@
+<div class="mb-4 p-20 px-160 text-6xl border-4  bg-amber-100">
+  <label for="credito" class="block text-5xl font-medium">Crédito Mensal:</label>
+  <input class="border p-2"
+      id="credito"
+      type="number"
+      [value]="credito"
+      (input)="onCreditoChange($event)"
+      placeholder="Digite o crédito mensal" />
+</div>

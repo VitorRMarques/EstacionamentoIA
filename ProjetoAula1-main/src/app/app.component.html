@@ -1,0 +1,80 @@
+
+<app-titulo></app-titulo>
+
+<div class="m-auto p-5 px-6">
+  <app-credito-input
+    [credito]="credito()"
+    (creditoChange)="atualizarCredito($event)">
+  </app-credito-input>
+
+  <h2 class="underline border p-20 px-150 font-medium text-gray-400 text-5xl " >Saldo Disponível: <span class=" font-bold text-black">R$ {{ saldo() | number:'1.2-2' }}</span></h2>
+
+  <app-items-input>
+    [despesaForm]="despesaForm"
+    [sugestoesCategorias]="obterSugestoesCategoria()"
+    (adicionarDespesa)="adicionarDespesa()"
+    <button class="border-2 bg-green-600" type="submit" [disabled]="despesaForm.invalid">Adicionar</button>
+    <h1>Total Gasto: R$ {{ totalGasto() | number:'1.2-2' }}</h1>
+  </app-items-input>
+  <table>
+    <thead class="bg-yellow-100">
+      <tr>
+        <th>ID</th>
+        <th>Descrição</th>
+        <th>Valor</th>
+        <th>Data</th>
+        <th>Categoria</th>
+        <th>Classificação</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody class="bg-yellow-200">
+      <tr *ngFor="let despesa of despesasFiltradas()">
+        <td>{{despesa.id}}</td>
+        <td>{{ despesa.descricao }}</td>
+        <td>R$ {{ despesa.valor | number:'1.2-2' }}</td>
+        <td>{{ despesa.data | date:'dd/MM/yyyy' }}</td>
+        <td>{{ despesa.categoria }}</td>
+        <td>{{ classificarCategoria(despesa.categoria) }}</td>
+        <td><button class="cursor-pointer bg-transparent border" (click)="removerDespesa(despesa.id)">Excluir</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="mt-4 mb-4">
+    <label for="filtroCategoria" class="block text-sm font-medium mb-2">Buscar por Categoria:</label>
+    <div class="flex gap-2">
+      <input class="border p-2 flex-1"
+          id="filtroCategoria"
+          type="text"
+          [value]="filtroCategoria()"
+          (input)="atualizarFiltroCategoria($any($event.target).value)"
+          placeholder="Digite para filtrar por categoria ou classificação (ex: contas, materiais, agua)"
+          list="filtroCategoriasList">
+      <datalist id="filtroCategoriasList">
+        <option *ngFor="let cat of obterSugestoesCategoria()" [value]="cat"></option>
+        <option value="contas"></option>
+        <option value="materiais"></option>
+        <option value="pagamentos"></option>
+      </datalist>
+      <button class="border-2 bg-gray-500 text-white px-4 py-2" (click)="limparFiltro()" type="button">Limpar</button>
+    </div>
+    <label for="filtroData" class="block text-sm font-medium mb-2 mt-4">Buscar por Data:</label>
+    <div class="flex gap-2">
+      <input class="border p-2 flex-1"
+          id="filtroData"
+          type="date"
+          [value]="filtroData()"
+          (input)="atualizarFiltroData($any($event.target).value)"
+          placeholder="Selecione uma data para filtrar">
+      <button class="border-2 bg-gray-500 text-white px-4 py-2" (click)="limparFiltro()" type="button">Limpar</button>
+    </div>
+    <p class="text-sm text-gray-600 mt-1">
+      Mostrando {{ despesasFiltradas().length }} de {{ despesas().length }} despesas
+      <span *ngIf="filtroCategoria() || filtroData()"> (filtrado por: 
+        <span *ngIf="filtroCategoria()">"{{ filtroCategoria() }}"</span>
+        <span *ngIf="filtroCategoria() && filtroData()"> e </span>
+        <span *ngIf="filtroData()">{{ filtroData() |date:'dd/MM/yyyy'}}</span>
+      )</span>
+    </p>
+  </div>
